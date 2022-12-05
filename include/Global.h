@@ -43,26 +43,22 @@
 #define DEFAULT_MOUSE_Y 0               // vị trí chuột theo tọa độ y của cửa sổ app
 
 namespace solar_system_glo_var
-{
-    inline static float lightPos[] = {0.0, 0.0, -75.0, 1.0};                // vị trí tiêu điểm 
-    inline static float spotAngle = 360;                                    // góc chiếu
-    inline float spotDirection[] = {1.0, 0.0, 0.0};                         // hướng chiếu
-    // các giá trị mặc định được gán vào biến toàn cục để sử dụng cho app //
-    inline static int isAnimate = DEFAULT_ANIMATE;                          
-    inline static int bigOrbitActive = DEFAULT_BIG_ORBIT;
-    inline static int smallOrbitActive = DEFAULT_SMALL_ORBIT;
-    inline static int moonsActive = DEFAULT_MOON;
-    inline static int changeCamera = DEFAULT_CAMERA_VI;
-    inline static int labelsActive = DEFAULT_LABEL;
-    inline static int zoom = DEFAULT_ZOOM;
-    inline static int logoScene = DEFAULT_LOGO_SCENE;
-    inline static int instructionState = DEFAULT_INSTRUCTION_STATE;
-    inline static int animationRepeatTime = DEFAULT_ANIMATION_REPEAT_TIME;
-    inline static char *mouseBtnPressed = DEFAULT_MOUSE_PRESS;
-    inline static char *mouseState = DEFAULT_MOUSE_STATE;
-    inline static int keyPressed = DEFAULT_KEY_PRESS;
-    inline static int mouseX = DEFAULT_MOUSE_X;
-    inline static int mouseY = DEFAULT_MOUSE_Y;
+{    // các giá trị mặc định được gán vào biến toàn cục để sử dụng cho app //
+     static int isAnimate = DEFAULT_ANIMATE;                          
+     static int bigOrbitActive = DEFAULT_BIG_ORBIT;
+     static int smallOrbitActive = DEFAULT_SMALL_ORBIT;
+     static int moonsActive = DEFAULT_MOON;
+     static int changeCamera = DEFAULT_CAMERA_VI;
+     static int labelsActive = DEFAULT_LABEL;
+     static int zoom = DEFAULT_ZOOM;
+     static int logoScene = DEFAULT_LOGO_SCENE;
+     static int instructionState = DEFAULT_INSTRUCTION_STATE;
+     static int animationRepeatTime = DEFAULT_ANIMATION_REPEAT_TIME;
+     static char *mouseBtnPressed = DEFAULT_MOUSE_PRESS;
+     static char *mouseState = DEFAULT_MOUSE_STATE;
+     static int keyPressed = DEFAULT_KEY_PRESS;
+     static int mouseX = DEFAULT_MOUSE_X;
+     static int mouseY = DEFAULT_MOUSE_Y;
 }
 
 #endif

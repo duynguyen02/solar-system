@@ -17,6 +17,7 @@ void print(const char *format, ...)
 	va_end(args);
 }
 
+#ifdef __unix__
 void printAt(int x, int y, const char *format, ...)
 {
 	va_list args;
@@ -25,6 +26,8 @@ void printAt(int x, int y, const char *format, ...)
 	printv(args, format);
 	va_end(args);
 }
+#endif
+
 void writeBitmapString(void *font, char string[])
 {
 	char *c;

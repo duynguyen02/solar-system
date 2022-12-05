@@ -1,12 +1,17 @@
 /**
  * Tệp chứa hàm main của chương trình
- * TODO : clean code lại 
+ * TODO : clean code lại
  */
 #include "include/Imageloader.h"
 #include "include/ScreenWriter.h"
 #include "include/Planet.h"
 
 using namespace solar_system_glo_var;
+using namespace std;
+
+static float lightPos[] = {0.0, 0.0, -75.0, 1.0}; // vị trí tiêu điểm
+static float spotAngle = 360;					  // góc chiếu
+float spotDirection[] = {1.0, 0.0, 0.0};		  // hướng chiếu
 
 void setup(void);
 
@@ -67,6 +72,11 @@ void keyInput(unsigned char key, int x, int y);
  */
 void onMenuActive(int menu);
 
+/**
+ * hàm hướng dẫn sử dụng
+ */
+void instruction(void);
+
 /// định nghĩa các biến đối tượng toàn cục ///
 
 GLuint sunTexture, merTexture, venTexture, earTexture, marTexture, jupTexture, satTexture, uraTexture, nepTexture, pluTexture, staTexture, logTexture;
@@ -94,6 +104,7 @@ Planet tri(.36, 3.2, 0, 3.40, 0, 0);	  // Triton   (Neptune)
 
 int main(int argc, char **argv)
 {
+	instruction();
 	// khởi tạo glut
 	glutInit(&argc, argv);
 	// khởi tạo các thông số cơ bản
@@ -227,7 +238,6 @@ void orbitalTrails(void)
 	// lấy tọa độ đã đặt vào stack ra lại
 	glPopMatrix();
 
-
 	// vẽ trục 3 chiều để thuận tiện trong việc hình dung các vị trí mô phỏng
 	glPushMatrix();
 	double len = 20.0; // độ dài của trục
@@ -279,7 +289,6 @@ void drawScene(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-
 #ifdef _WIN32
 #elif __MINGW32__
 #elif __unix__
@@ -299,20 +308,20 @@ void drawScene(void)
 		printAt(5, 455, "Nhan phim +/- de tang/giam toc do quay");
 		printAt(5, 430, "Nhan phim D/d de thiet lap lai gia tri mac dinh");
 		printAt(5, 405, "Nhan phim ESC de ket thuc gia lap");
+
+		// trong 1s thay khung bao nhiêu lần
+		printAt(5, 85, "Speed = %f", (1.0 / (animationRepeatTime / 1000.0)));
+		// click chuột phải hay trái
+		printAt(5, 65, "Mouse Button = %s", mouseBtnPressed);
+		// nhả hay nhấn chuột
+		printAt(5, 45, "Mouse State = %s", mouseState);
+		// nhấn phím nào
+		printAt(5, 25, "Key = %d", keyPressed);
+		// tọa độ chuột
+		printAt(5, 05, "Mouse x=%d, Mouse y=%d", mouseX, mouseY);
 	}
 #elif __APPLE__
 #endif
-
-	// trong 1s thay khung bao nhiêu lần
-	printAt(5, 85, "Speed = %f", (1.0 / (animationRepeatTime / 1000.0)));
-	// click chuột phải hay trái
-	printAt(5, 65, "Mouse Button = %s", mouseBtnPressed);
-	// nhả hay nhấn chuột
-	printAt(5, 45, "Mouse State = %s", mouseState);
-	// nhấn phím nào
-	printAt(5, 25, "Key = %d", keyPressed);
-	// tọa độ chuột
-	printAt(5, 05, "Mouse x=%d, Mouse y=%d", mouseX, mouseY);
 
 	// đặt góc nhìn camera
 	if (changeCamera == 0)
@@ -931,4 +940,20 @@ void keyInput(unsigned char key, int x, int y)
 void onMenuActive(int menu)
 {
 	keyInput(menu, 0, 0);
+}
+
+void instruction(void)
+{
+	cout << "Nhan phim SPACE/LEFT_MOUSE de chay/dung mo phong" << endl;
+	cout << "Nhan phim O de an/hien quy dao hanh tinh" << endl;
+	cout << "Nhan phim o de an/hien quy dao ve tinh" << endl;
+	cout << "Nhan phim M/m de an/hien cac ve tinh" << endl;
+	cout << "Nhan phim L/l de an/hien cac nhan" << endl;
+	cout << "Nhan phim 1/2/3 de thay doi goc nhin" << endl;
+	cout << "Cuon chuot de phong to/thu nho (voi HDH Windows)" << endl;
+	cout << "Nhan phim >/< de phong to/thu nho (voi HDH Linux)" << endl;
+	cout << "Nhan phim H/h de an/hien huong dan" << endl;
+	cout << "Nhan phim +/- de tang/giam toc do quay" << endl;
+	cout << "Nhan phim D/d de thiet lap lai gia tri mac dinh" << endl;
+	cout << "Nhan phim ESC de ket thuc gia lap" << endl;
 }
