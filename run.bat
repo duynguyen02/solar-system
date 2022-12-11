@@ -1,1 +1,1 @@
-g++ -std=c++11 main.cpp ScreenWriter.cpp Imageloader.cpp Planet.cpp -lopengl32 -lglu32 -lfreeglut -I./include  -o main && cls && main.exe && del /f main.exe 0 && exit
+g++ -std=c++11 main.cpp ScreenWriter.cpp Imageloader.cpp Planet.cpp SolarSystem.cpp -lopengl32 -lglu32 -lfreeglut -I./include  -o main && main.exe && del /f main.exe 0 && exit
