@@ -6,8 +6,23 @@
 #include "include/Planet.h"
 #include "include/SolarSystem.h"
 
-using namespace solar_system_glo_var;
 using namespace std;
+
+int isAnimate;
+int bigOrbitActive;
+int smallOrbitActive;
+int moonsActive;
+int changeCamera;
+int labelsActive;
+int zoom;
+int logoScene;
+int instructionState;
+int animationRepeatTime;
+char *mouseBtnPressed;
+char *mouseState;
+int keyPressed;
+int mouseX;
+int mouseY;
 
 static float lightPos[] = {0.0, 0.0, -75.0, 1.0}; // vị trí tiêu điểm
 static float spotAngle = 360;					  // góc chiếu
@@ -99,6 +114,22 @@ Planet tri(.36, 3.2, 0, 3.40, 0, 0);	  // Triton   (Neptune)
 
 int main(int argc, char **argv)
 {
+	isAnimate = DEFAULT_ANIMATE;
+	bigOrbitActive = DEFAULT_BIG_ORBIT;
+	smallOrbitActive = DEFAULT_SMALL_ORBIT;
+	moonsActive = DEFAULT_MOON;
+	changeCamera = DEFAULT_CAMERA_VI;
+	labelsActive = DEFAULT_LABEL;
+	zoom = DEFAULT_ZOOM;
+	logoScene = DEFAULT_LOGO_SCENE;
+	instructionState = DEFAULT_INSTRUCTION_STATE;
+	animationRepeatTime = DEFAULT_ANIMATION_REPEAT_TIME;
+	mouseBtnPressed = DEFAULT_MOUSE_PRESS;
+	mouseState = DEFAULT_MOUSE_STATE;
+	keyPressed = DEFAULT_KEY_PRESS;
+	mouseX = DEFAULT_MOUSE_X;
+	mouseY = DEFAULT_MOUSE_Y;
+
 	instruction();
 	// khởi tạo glut
 	glutInit(&argc, argv);
@@ -206,7 +237,6 @@ void setup(void)
 	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spotDirection);
 }
 
-
 void drawLogoScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -289,9 +319,7 @@ void drawScene(void)
 			sat.distance,
 			ura.distance,
 			nep.distance,
-			plu.distance
-		);
-
+			plu.distance);
 
 	GLUquadric *quadric;
 	quadric = gluNewQuadric();
@@ -308,7 +336,7 @@ void drawScene(void)
 	drawNeptune(nep, tri, nepTexture, quadric);
 	drawPluto(plu, nix, pluTexture, quadric);
 	drawBackground(staTexture);
-	
+
 	glutSwapBuffers();
 }
 

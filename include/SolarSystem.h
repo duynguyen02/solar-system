@@ -3,7 +3,6 @@
 #include "Global.h"
 #include "Planet.h"
 #include "ScreenWriter.h"
-using namespace solar_system_glo_var;
 /**
  * hàm vẽ các quỹ đạo
  */
