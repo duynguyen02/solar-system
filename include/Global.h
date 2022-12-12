@@ -33,6 +33,7 @@
 #define DEFAULT_INSTRUCTION_STATE 1 // hiển thị hướng dẫn sử dụng
 
 // định nghĩa các giá trị mặc định khác của ứng dụng
+#define DEFAULT_LENGTH_OF_AXIS 59.0      // độ dài của các trục tọa độ tỷ lệ 1/100.000.000
 #define DEFAULT_CAMERA_VI 0              // hướng nhìn camera (0: chéo từ trên xuống 1: nằm ngang 2: từ trên xuống)
 #define DEFAULT_ZOOM 50                  // độ phóng tầm nhìn
 #define DEFAULT_ANIMATION_REPEAT_TIME 30 // thời gian vẽ lại khung (30ms vẽ lại khung hay 1s vẽ khoảng hơn 30 khung)
@@ -58,5 +59,6 @@ extern char *mouseState;
 extern int keyPressed;
 extern int mouseX;
 extern int mouseY;
+extern float axisLength;
 
 #endif

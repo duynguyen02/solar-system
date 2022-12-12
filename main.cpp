@@ -8,26 +8,6 @@
 
 using namespace std;
 
-int isAnimate;
-int bigOrbitActive;
-int smallOrbitActive;
-int moonsActive;
-int changeCamera;
-int labelsActive;
-int zoom;
-int logoScene;
-int instructionState;
-int animationRepeatTime;
-char *mouseBtnPressed;
-char *mouseState;
-int keyPressed;
-int mouseX;
-int mouseY;
-
-static float lightPos[] = {0.0, 0.0, -75.0, 1.0}; // vị trí tiêu điểm
-static float spotAngle = 360;					  // góc chiếu
-float spotDirection[] = {1.0, 0.0, 0.0};		  // hướng chiếu
-
 void setup(void);
 
 /**
@@ -89,28 +69,53 @@ void instruction(void);
 
 /// định nghĩa các biến đối tượng toàn cục ///
 
+int isAnimate;
+int bigOrbitActive;
+int smallOrbitActive;
+int moonsActive;
+int changeCamera;
+int labelsActive;
+int zoom;
+int logoScene;
+int instructionState;
+int animationRepeatTime;
+char *mouseBtnPressed;
+char *mouseState;
+int keyPressed;
+int mouseX;
+int mouseY;
+float axisLength;
+
 GLuint sunTexture, merTexture, venTexture, earTexture, marTexture, jupTexture, satTexture, uraTexture, nepTexture, pluTexture, staTexture, logTexture;
-// Sun, Planets and Stars
-Planet sun(5.0, 0, 0, 0, 0, 0);			  // Sun
-Planet mer(1.0, 7, 0, 4.74, 02.11, 0);	  // Mercury
-Planet ven(1.5, 11, 0, 3.50, 177.0, 0);	  // Venus
-Planet ear(2.0, 16, 0, 2.98, 23.44, 0);	  // Earth
-Planet mar(1.2, 21, 0, 2.41, 25.00, 0);	  // Mars
-Planet jup(3.5, 28, 0, 1.31, 03.13, 0);	  // Jupiter
-Planet sat(3.0, 37, 0, 0.97, 26.70, 0);	  // Saturn
+
+// bán kính // khoảng cách // quỹ đạo // tốc độ quỹ đạo // độ nghiên // trục xoay
+Planet sun(5.0, 0, 0, 0, 0, 0);			 // Sun
+Planet mer(1.0, 7, 0, 4.74, 0.027, 0);	 // Mercury
+Planet ven(1.5, 11, 0, 3.50, 177.36, 0); // Venus
+
+Planet ear(2.0, 16, 0, 2.98, 23.44, 0); // Earth
+Planet lun(.40, 3, 0, 5.40, 0, 0);		// Luna     (Earth)
+
+Planet mar(1.2, 21, 0, 2.41, 25.19, 0); // Mars
+Planet pho(.20, 1.8, 0, 2.30, 0, 0);	// Phobos   (Mars)
+Planet dei(.24, 2.4, 0, 3.60, 0, 0);	// Deimos   (Mars)
+
+Planet jup(3.5, 28, 0, 1.31, 3.13, 0); // Jupiter
+Planet eur(.24, 4, 0, 4.40, 0, 0);	   // Europa   (Jupiter)
+Planet gan(.24, 4.7, 0, 5.00, 0, 0);   // Ganymede (Jupiter)
+Planet cal(.24, 5.3, 0, 2.30, 0, 0);   // Callisto (Jupiter)
+
+Planet sat(3.0, 37, 0, 0.97, 26.73, 0); // Saturn
+Planet tit(.75, 3.7, 0, 2.40, 0, 0);	// Titan	   (Saturn)
+
 Planet ura(2.5, 45.5, 0, 0.68, 97.77, 0); // Uranus
-Planet nep(2.3, 53.6, 0, 0.54, 28.32, 0); // Neptune
-Planet plu(0.3, 59, 0, 0.47, 119.6, 0);	  // Pluto
-Planet lun(.40, 3, 0, 5.40, 0, 0);		  // Luna     (Earth)
-Planet pho(.20, 1.8, 0, 2.30, 0, 0);	  // Phobos   (Mars)
-Planet dei(.24, 2.4, 0, 3.60, 0, 0);	  // Deimos   (Mars)
-Planet eur(.24, 4, 0, 4.40, 0, 0);		  // Europa   (Jupiter)
-Planet gan(.24, 4.7, 0, 5.00, 0, 0);	  // Ganymede (Jupiter)
-Planet cal(.24, 5.3, 0, 2.30, 0, 0);	  // Callisto (Jupiter)
-Planet tit(.75, 3.7, 0, 2.40, 0, 0);	  // Titan	   (Saturn)
-Planet nix(.10, 1.5, 0, 5.00, 0, 0);	  // Nix	   (Pluto)
 Planet puc(.26, 2.9, 0, 7.00, 0, 0);	  // Puck	   (Uranus)
+
+Planet nep(2.3, 53.6, 0, 0.54, 28.32, 0); // Neptune
 Planet tri(.36, 3.2, 0, 3.40, 0, 0);	  // Triton   (Neptune)
+
+Planet plu(0.3, 59, 0, 0.47, 122.53, 0); // Pluto
+Planet nix(.10, 1.5, 0, 5.00, 0, 0);	 // Nix	   (Pluto)
 
 int main(int argc, char **argv)
 {
@@ -129,6 +134,7 @@ int main(int argc, char **argv)
 	keyPressed = DEFAULT_KEY_PRESS;
 	mouseX = DEFAULT_MOUSE_X;
 	mouseY = DEFAULT_MOUSE_Y;
+	axisLength = DEFAULT_LENGTH_OF_AXIS;
 
 	instruction();
 	// khởi tạo glut
@@ -179,7 +185,9 @@ void setup(void)
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	// kích hoạt chế độ trong việc vẽ các đối tượng theo 3 chiều
 	glEnable(GL_DEPTH_TEST);
+	// tự động chuẩn hóa đơn vị của các vector pháp tuyến trong việc chiếu sáng
 	glEnable(GL_NORMALIZE);
+	// kích hoạt chế độ màu khuếch tán (nếu không kích hoạt giả lập bị đổ màu tối)
 	glEnable(GL_COLOR_MATERIAL);
 
 	// tải hình ảnh từ các file và chuyển thành texture
@@ -220,18 +228,31 @@ void setup(void)
 	logTexture = loadTexture(log);
 	delete log;
 
-	// thiết đặt đổ bóng
+	// kích hoạt đổ bóng
 	glEnable(GL_LIGHTING);
+
+	// tham khảo tại: https://phattrienphanmem123az.com/lap-trinh-opengl-cpp/opengl-cpp-bai-5-anh-sang.html
+	// đặt ánh sáng cho toàn khung nền (chiếu sáng toàn phần |GL_LIGHT0: ánh sáng trắng)
+	// giá trị của ánh sáng và cường độ RBGA (nếu thay đổi giá trị màu ánh sáng sẽ bị thay đổi)
 	float lightAmb[] = {0.0, 0.0, 0.0, 1.0};
-	float lightDifAndSpec[] = {1.0, 1.0, 1.0, 1.0};
-	float globAmb[] = {0.5, 0.5, 0.5, 1.0};
 	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmb);
+
+	float lightDifAndSpec[] = {1.0, 1.0, 1.0, 1.0};
+	// đặt ánh sáng khuếch tán 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDifAndSpec);
+	// đặt ánh sáng phản xạ
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightDifAndSpec);
+
 	glEnable(GL_LIGHT0);
+	float globAmb[] = {0.5, 0.5, 0.5, 1.0};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globAmb);
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+	// thiết lập các hướng chiếu của mặt trời
+	static float lightPos[] = {0.0, 0.0, -75.0, 1.0}; // vị trí tiêu điểm
+	static float spotAngle = 360;					  // góc chiếu
+	float spotDirection[] = {1.0, 0.0, 0.0};		  // hướng chiếu
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, spotAngle);
 	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spotDirection);
@@ -242,11 +263,15 @@ void drawLogoScene(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
+	// liên kết texture vào mục tiêu
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, logTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	// set các param của texture (GL_LINEAR: chế độ bọc ảnh hòa trộn)
+	// tham khảo: https://phattrienphanmem123az.com/lap-trinh-opengl-cpp/opengl-cpp-bai-8-load-texture.html
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	// glTexcoord2f để map texture vào đối tượng
 	glBegin(GL_POLYGON);
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-100, -100, -100);
@@ -285,7 +310,8 @@ void drawScene(void)
 		printAt(5, 455, "Nhan phim +/- de tang/giam toc do quay");
 		printAt(5, 430, "Nhan phim D/d de thiet lap lai gia tri mac dinh");
 		printAt(5, 405, "Nhan phim ESC de ket thuc gia lap");
-
+		// độ dài bán kính so với thực tế
+		printAt(5, 105, "Actual Radius = %.2fM KM", axisLength * 100);
 		// trong 1s thay khung bao nhiêu lần
 		printAt(5, 85, "Speed = %f", (1.0 / (animationRepeatTime / 1000.0)));
 		// click chuột phải hay trái
@@ -300,7 +326,13 @@ void drawScene(void)
 #elif __APPLE__
 #endif
 
-	// đặt góc nhìn camera
+	// đặt góc nhìn camera gluLookAt
+	// e: vị trí của mắt (camera) c: vị trí của vật thể mà mắt nhìn vào u: hướng xoay của mắt theo vector up
+	// eX: hướng mắt nhìn theo trục x (x tăng thì hướng nhìn sẽ lệch qua phải)
+	// eY: hướng mắt nhìn theo trục y (y tăng thì hướng nhìn sẽ tăng lên trên đỉnh)
+	// eZ: hướng mắt nhìn theo trục z (z tăng thì hướng nhìn sẽ gần vào)
+	// cX cY cZ: hướng mắt nhìn thẳng vào tọa độ (0,0,0)
+	// uX uY uZ: vị trí hướng xoay của mắt theo vector up
 	if (changeCamera == 0)
 		gluLookAt(0.0, zoom, 50.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	if (changeCamera == 1)
@@ -321,6 +353,8 @@ void drawScene(void)
 			nep.distance,
 			plu.distance);
 
+	// tạo một đối tượng quadrics 
+	// cần thiết để xây dựng một đối tượng 3D có bọc ảnh
 	GLUquadric *quadric;
 	quadric = gluNewQuadric();
 

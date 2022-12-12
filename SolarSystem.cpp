@@ -2,18 +2,42 @@
 
 void orbitalTrails(float merDis, float venDis, float earDis, float marDis, float jupDis, float satDis, float uraDis, float nepDis, float pluDis)
 {
+    // vẽ trục 3 chiều để thuận tiện trong việc hình dung các vị trí mô phỏng
+    glPushMatrix();
+    glColor3f(1.0, 1.0, 1.0);
+    glBegin(GL_LINES);
+    glVertex3d(0, 0, 0);
+    glVertex3d(axisLength, 0, 0);
+    glVertex3d(0, 0, 0);
+    glVertex3d(0, axisLength, 0);
+    glVertex3d(0, 0, 0);
+    glVertex3d(0, 0, axisLength);
+    glEnd();
+    // gán nhãn cho từng trục
+    glRasterPos3d(axisLength, 0, 0);
+    print("X");
+    glRasterPos3d(0, axisLength, 0);
+    print("Y");
+    glRasterPos3d(0, 0, axisLength);
+    print("Z");
+    glPopMatrix();
+
     // đặt tọa độ hiện tại vào stack
     glPushMatrix();
     // đặt màu
     glColor3ub(255, 255, 255);
 
-    // dịch tọa độ tâm
+    // dịch tọa độ tâm về tọa độ (0,0,0) để xác định tâm theo tọa độ trục
     glTranslatef(0.0, 0.0, 0.0);
 
     // xoay theo hướng 90 ở trục x
     glRotatef(90.0, 1.0, 0.0, 0.0);
 
-    // vẽ các hình vòng xuyến dựa theo khoảng cách từ tâm đến các vị trí hành tinh
+    // vẽ các hình vòng xuyến dựa theo khoảng cách từ tâm đến các vị trí ohành tinh
+    // glutWireTorus vẽ một đường đa giác với việc tăng n đa giác lên sẽ khiến đa giác thành một vòng tròn
+    // tham khảo: https://linux.die.net/man/3/glutwiretorus
+    // minh chứng: https://youtu.be/x3rEQ-YiTrA?t=110
+    // bán kính của ống // bán kính của vòng xuyến // số cạnh của ống // số cạnh của vòng xuyến
     glutWireTorus(0.001, merDis, 100.0, 100.0);
     glutWireTorus(0.001, venDis, 100.0, 100.0);
     glutWireTorus(0.001, earDis, 100.0, 100.0);
@@ -26,51 +50,48 @@ void orbitalTrails(float merDis, float venDis, float earDis, float marDis, float
 
     // lấy tọa độ đã đặt vào stack ra lại
     glPopMatrix();
-
-    // vẽ trục 3 chiều để thuận tiện trong việc hình dung các vị trí mô phỏng
-    glPushMatrix();
-    double len = 20.0; // độ dài của trục
-    glColor3f(1.0, 1.0, 1.0);
-    glBegin(GL_LINES);
-    glVertex3d(0, 0, 0);
-    glVertex3d(len, 0, 0);
-    glVertex3d(0, 0, 0);
-    glVertex3d(0, len, 0);
-    glVertex3d(0, 0, 0);
-    glVertex3d(0, 0, len);
-    glEnd();
-    // gán nhãn cho từng trục
-    glRasterPos3d(len, 0, 0);
-    print("X");
-    glRasterPos3d(0, len, 0);
-    print("Y");
-    glRasterPos3d(0, 0, len);
-    print("Z");
-    glPopMatrix();
 }
 
+
+/// các hàm draw...() bên dưới cũng tương tự ///
 void drawSun(Planet sun, GLuint sunTexture, GLUquadric *quadric)
 {
     glPushMatrix();
+    // vị trí góc xoay của sun theo trục y (y = 1.0) (theo mô phỏng thì mọi hành tinh đều ở góc 0)
     glRotatef(sun.orbit, 0.0, 1.0, 0.0);
+
+    // đặt sun vào vị trí của nó trên mặt phẳng tọa độ x 
+    // và nó sẽ xoay theo từ khoảng cách này tới tâm (nếu có)
     glTranslatef(sun.distance, 0.0, 0.0);
+
     if (labelsActive == 1)
     {
+        // chỉ định toa độ cho đối tượng raster và ghi nhãn vào màn hình
         glRasterPos3f(-1.2, 7.0, 0.0);
         glColor3ub(255, 255, 255);
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Mat Troi");
     }
+
     glPushMatrix();
+
+    // chỉnh độ nghiên của sun theo mặt phẳng hoàng đạo (trục tọa độ)
     glRotatef(sun.axisTilt, 1.0, 0.0, 0.0);
+    // góc xoay đối với chính nó (trục tọa độ)
     glRotatef(sun.axisAni, 0.0, 1.0, 0.0);
     glRotatef(90.0, 1.0, 0.0, 0.0);
+
+    // bọc ảnh
+    // tương tự trong hàm drawLogoScene
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, sunTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     gluQuadricTexture(quadric, 1);
+    // vẽ hình cầu 
+    // quadrid // bán kính // số lượng kinh tuyến // số lượng vĩ tuyến
     gluSphere(quadric, sun.radius, 20.0, 20.0);
     glDisable(GL_TEXTURE_2D);
+
     glPopMatrix();
     glPopMatrix();
 }
