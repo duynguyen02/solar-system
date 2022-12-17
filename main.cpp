@@ -2,12 +2,15 @@
  * Tệp chứa hàm main của chương trình
  */
 #include "include/Imageloader.h"
-#include "include/ScreenWriter.h"
+#include "include/ScreenWriter.h"	
 #include "include/Planet.h"
 #include "include/SolarSystem.h"
 
 using namespace std;
 
+/**
+ * thiết lập cơ bản cho 1 project opengl và tải các ảnh bitmap từ file vào chương trình
+ */
 void setup(void);
 
 /**
@@ -341,7 +344,8 @@ void drawScene(void)
 		gluLookAt(0.0, zoom, 0.00001, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 	// nếu cờ lệnh vẽ quỹ đạo hành tinh bật thì vẽ
-	if (bigOrbitActive == 1)
+	if (bigOrbitActive == 1){
+		drawAxis();
 		orbitalTrails(
 			mer.distance,
 			ven.distance,
@@ -352,6 +356,7 @@ void drawScene(void)
 			ura.distance,
 			nep.distance,
 			plu.distance);
+	}
 
 	// tạo một đối tượng quadrics 
 	// cần thiết để xây dựng một đối tượng 3D có bọc ảnh
@@ -443,10 +448,25 @@ void drawScenesInOrder(void)
 
 void resize(int w, int h)
 {
-	glViewport(0, 0, w, h);
+	// để hình ảnh trong mô phỏng không bị biến dạng khi cửa số mô phỏng bị thay đổi kích thướt
+	// ta thiết lập tính toán lại các thông số phối cảnh 
+	// tham khảo: http://www.lighthouse3d.com/tutorials/glut-tutorial/preparing-the-window-for-a-reshape/
+	
+	// ngăn không cho tỷ lệ (ratio) chia cho 0
+	if (h == 0)
+        h = 1;
+	float ratio = 1.0 * w / h;
+
+	// chỉ định ma trận sử dụng là ma trận chiếu (GL_PROJECTION)
 	glMatrixMode(GL_PROJECTION);
+	// reset lại ma trận 
 	glLoadIdentity();
-	glFrustum(-5.0, 5.0, -5.0, 5.0, 5.0, 200.0);
+	// thiết đặt viewport là toàn cửa sổ
+	glViewport(0, 0, w, h);
+	// thiết đặt phối cảnh 
+	// góc nhìn theo trục y // tỷ lệ khung hình chính xác giữ x so với y // khoảng cách từ trình xem đến mặt phẳng cắt gần nhất //  khoảng cách từ trình xem đến mặt phẳng cắt ở xa
+	gluPerspective(90, ratio, 1, 1000);
+	// chỉ định lại ma trận modelview
 	glMatrixMode(GL_MODELVIEW);
 }
 

@@ -1,8 +1,7 @@
 #include "include/SolarSystem.h"
 
-void orbitalTrails(float merDis, float venDis, float earDis, float marDis, float jupDis, float satDis, float uraDis, float nepDis, float pluDis)
-{
-    // vẽ trục 3 chiều để thuận tiện trong việc hình dung các vị trí mô phỏng
+void drawAxis(){
+    // vẽ trục 3 chiều
     glPushMatrix();
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_LINES);
@@ -21,7 +20,10 @@ void orbitalTrails(float merDis, float venDis, float earDis, float marDis, float
     glRasterPos3d(0, 0, axisLength);
     print("Z");
     glPopMatrix();
+}
 
+void orbitalTrails(float merDis, float venDis, float earDis, float marDis, float jupDis, float satDis, float uraDis, float nepDis, float pluDis)
+{
     // đặt tọa độ hiện tại vào stack
     glPushMatrix();
     // đặt màu

@@ -3,6 +3,12 @@
 #include "Global.h"
 #include "Planet.h"
 #include "ScreenWriter.h"
+
+/**
+ * hàm vẽ trục
+ */
+void drawAxis();
+
 /**
  * hàm vẽ các quỹ đạo
  */
