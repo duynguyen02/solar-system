@@ -30,9 +30,6 @@
 `Nguyễn Phùng Hưng - 2051067550`
 >[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/profile.php?id=100013314739498)
 
-`Trần Văn Tân - 2051067560`
->[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/Augenstern.jun03)
-
 ## Cài đặt và sử dụng
 
 ### Hệ điều hành Windows
@@ -44,7 +41,7 @@
     [Chi tiết cài đặt trình biên dịch và thiết lập biến môi trường tại đây](https://exploreshaifali.github.io/2014/07/18/Using-GCC-Compiler-on-Windows/)
 - `Thư viện Freeglut`
 
-    [Tải thư viện tại đây](https://www.transmissionzero.co.uk/files/software/development/GLUT/freeglut-MSVC.zip)
+    [Tải thư viện tại đây](https://www.transmissionzero.co.uk/files/software/development/GLUT/freeglut-MinGW.zip)
 
 - `Hướng dẫn cài đặt`
 
@@ -62,7 +59,7 @@
 
 - `Thực hiện chạy phần mềm mô phỏng`
 
-    [Tải mã nguồn tại đây](https://github.com/duynguyen02/Aurora5-OS/archive/refs/heads/master.zip)
+    [Tải mã nguồn tại đây](https://github.com/duynguyen02/solar-system/archive/refs/heads/main.zip)
 
 Sau khi tải và giải nén mã nguồn, nhấn đúp vào file `run.bat` để thực hiện biên dịch và thực thi mã nguồn. Nếu xảy ra lỗi, vui lòng kiểm tra lại mục cài đặt trình biên dịch và thư viện [phía trên](#cài-đặt-và-sử-dụng)
 
