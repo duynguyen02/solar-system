@@ -41,7 +41,7 @@
     [Chi tiết cài đặt trình biên dịch và thiết lập biến môi trường tại đây](https://exploreshaifali.github.io/2014/07/18/Using-GCC-Compiler-on-Windows/)
 - `Thư viện Freeglut`
 
-    [Tải thư viện tại đây](https://www.transmissionzero.co.uk/files/software/development/GLUT/freeglut-MinGW.zip)
+    [Tải thư viện tại đây](https://www.transmissionzero.co.uk/files/software/development/GLUT)
 
 - `Hướng dẫn cài đặt`
 
