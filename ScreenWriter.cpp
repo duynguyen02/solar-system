@@ -28,6 +28,7 @@ void printAt(int x, int y, const char *format, ...)
 }
 #endif
 
+
 void writeBitmapString(void *font, char string[])
 {
 	char *c;

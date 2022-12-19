@@ -30,3 +30,5 @@ void Planet::drawMoon(void)
     gluSphere(quadric, radius, 20.0, 20.0);
     glPopMatrix();
 }
+
+
