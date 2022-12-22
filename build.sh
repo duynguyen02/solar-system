@@ -1,0 +1,1 @@
+g++ main.cpp Imageloader.cpp Planet.cpp ScreenWriter.cpp SolarSystem.cpp -lglut -lGL -lGLU -lglfw ./ikpFlac.so ./ikpMP3.so ./libIrrKlang.so  -I./include/ -o SolarSystem_Linux

@@ -1,0 +1,1 @@
+g++ -std=c++11 main.cpp ScreenWriter.cpp Imageloader.cpp Planet.cpp SolarSystem.cpp ./lib/irrKlang.lib ./irrKlang.dll -lopengl32 -lglu32 -lfreeglut -I./include -o SolarSystem_Windows
