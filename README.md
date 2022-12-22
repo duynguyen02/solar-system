@@ -61,7 +61,7 @@
 
     [Tải mã nguồn tại đây](https://github.com/duynguyen02/solar-system/archive/refs/heads/main.zip)
 
-Sau khi tải và giải nén mã nguồn, nhấn đúp vào file `run.bat` để thực hiện biên dịch và thực thi mã nguồn. Nếu xảy ra lỗi, vui lòng kiểm tra lại mục cài đặt trình biên dịch và thư viện [phía trên](#cài-đặt-và-sử-dụng)
+Sau khi tải và giải nén mã nguồn, nhấn đúp vào file `run.bat` để thực hiện biên dịch và thực thi mã nguồn. Nếu xảy ra lỗi, vui lòng kiểm tra lại mục cài đặt trình biên dịch và thư viện [phía trên](#cài-đặt-và-sử-dụng). Hoặc có thể nhấn đúp chuột vào tệp `SolarSystem_Windows` mà không cần cài trình biên dịch hay thư viện.
 
 ### Hệ điều hành Linux
 
@@ -86,11 +86,18 @@ sudo apt-get install freeglut3-dev
 sudo apt-get install mesa-utils
 ```
 
-- `Thực hiện chạy phần mềm mô phỏng`
+- `Thực hiện chạy phần mềm mô phỏng 1 trong 2 cách dưới đây`
 
 ```bash
 git clone https://github.com/duynguyen02/solar-system
 cd solar-system
 chmod +x run.sh
 ./run.sh
+```
+
+```bash
+git clone https://github.com/duynguyen02/solar-system
+cd solar-system
+chmod +x SolarSystem_Linux
+./SolarSystem_Linux
 ```
