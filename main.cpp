@@ -6,6 +6,10 @@
 #include "include/Planet.h"
 #include "include/SolarSystem.h"
 
+// tham khảo: https://learnopengl.com/In-Practice/2D-Game/Audio
+#include "include/irrKlang/irrKlang.h"
+using namespace irrklang;
+
 using namespace std;
 
 void setup(void);
@@ -86,6 +90,52 @@ int mouseX;
 int mouseY;
 float axisLength;
 
+PLANET_MODE planetModes[MAX_OF_PLANET_MODE] = {
+	SUN,
+	MER,
+	VEN,
+	EAR,
+	MAR,
+	JUP,
+	SAT,
+	URA,
+	NEP,
+	PLU};
+
+int planetModeIndex;
+float eyeX;
+char *currentPlanet;
+
+// danh sách tên hiển thị của các hành tinh
+char *planetDisplayName[MAX_OF_PLANET_MODE] = {
+	SUN_DISPLAY_NAME,
+	MER_DISPLAY_NAME,
+	VEN_DISPLAY_NAME,
+	EAR_DISPLAY_NAME,
+	MAR_DISPLAY_NAME,
+	JUP_DISPLAY_NAME,
+	SAT_DISPLAY_NAME,
+	URA_DISPLAY_NAME,
+	NEP_DISPLAY_NAME,
+	PLU_DISPLAY_NAME};
+
+// danh sách đường dẫn âm thanh các hành tinh
+char *planetsSound[MAX_OF_PLANET_MODE] = {
+	SUN_SOUND,
+	MER_SOUND,
+	VEN_SOUND,
+	EAR_SOUND,
+	MAR_SOUND,
+	JUP_SOUND,
+	SAT_SOUND,
+	URA_SOUND,
+	NEP_SOUND,
+	PLU_SOUND
+};
+
+// khởi tạo đối tượng để phát nhạc
+ISoundEngine *SoundEngine = createIrrKlangDevice();
+
 GLuint sunTexture, merTexture, venTexture, earTexture, marTexture, jupTexture, satTexture, uraTexture, nepTexture, pluTexture, staTexture, logTexture;
 
 // bán kính // khoảng cách // quỹ đạo // tốc độ quỹ đạo // độ nghiên // trục xoay
@@ -119,6 +169,12 @@ Planet nix(.10, 1.5, 0, 5.00, 0, 0);	 // Nix	   (Pluto)
 
 int main(int argc, char **argv)
 {
+	SoundEngine->play2D(MAIN_SOUND, true);
+
+	eyeX = sun.distance;
+
+	currentPlanet = SUN_DISPLAY_NAME;
+	planetModeIndex = DEFAULT_PLANET_MODE;
 	isAnimate = DEFAULT_ANIMATE;
 	bigOrbitActive = DEFAULT_BIG_ORBIT;
 	smallOrbitActive = DEFAULT_SMALL_ORBIT;
@@ -182,6 +238,7 @@ int main(int argc, char **argv)
 
 void setup(void)
 {
+
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	// kích hoạt chế độ trong việc vẽ các đối tượng theo 3 chiều
 	glEnable(GL_DEPTH_TEST);
@@ -238,7 +295,7 @@ void setup(void)
 	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmb);
 
 	float lightDifAndSpec[] = {1.0, 1.0, 1.0, 1.0};
-	// đặt ánh sáng khuếch tán 
+	// đặt ánh sáng khuếch tán
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDifAndSpec);
 	// đặt ánh sáng phản xạ
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightDifAndSpec);
@@ -309,20 +366,24 @@ void drawScene(void)
 		printAt(5, 480, "Nhan phim H/h de an/hien huong dan");
 		printAt(5, 455, "Nhan phim +/- de tang/giam toc do quay");
 		printAt(5, 430, "Nhan phim D/d de thiet lap lai gia tri mac dinh");
-		printAt(5, 405, "Nhan phim ESC de ket thuc gia lap");
-		// độ dài bán kính so với thực tế
-		printAt(5, 105, "Actual Radius = %.2fM KM", axisLength * 100);
-		// trong 1s thay khung bao nhiêu lần
-		printAt(5, 85, "Speed = %f", (1.0 / (animationRepeatTime / 1000.0)));
-		// click chuột phải hay trái
-		printAt(5, 65, "Mouse Button = %s", mouseBtnPressed);
-		// nhả hay nhấn chuột
-		printAt(5, 45, "Mouse State = %s", mouseState);
-		// nhấn phím nào
-		printAt(5, 25, "Key = %d", keyPressed);
-		// tọa độ chuột
-		printAt(5, 05, "Mouse x=%d, Mouse y=%d", mouseX, mouseY);
+		printAt(5, 405, "Nhan phim t de thay doi goc nhin quy dao sang hanh tinh khac");
+		printAt(5, 380, "Nhan phim T de chuyen goc nhin doi cua quy dao hanh tinh hien hanh");
+		printAt(5, 355, "Nhan phim ESC de ket thuc gia lap");
 	}
+	// Hành tinh hiện hành
+	printAt(5, 125, "Current Planet = %s", currentPlanet);
+	// độ dài bán kính so với thực tế
+	printAt(5, 105, "Actual Radius = %.2fM KM", axisLength * 100);
+	// trong 1s thay khung bao nhiêu lần
+	printAt(5, 85, "Speed = %f", (1.0 / (animationRepeatTime / 1000.0)));
+	// click chuột phải hay trái
+	printAt(5, 65, "Mouse Button = %s", mouseBtnPressed);
+	// nhả hay nhấn chuột
+	printAt(5, 45, "Mouse State = %s", mouseState);
+	// nhấn phím nào
+	printAt(5, 25, "Key = %d", keyPressed);
+	// tọa độ chuột
+	printAt(5, 05, "Mouse x=%d, Mouse y=%d", mouseX, mouseY);
 #elif __APPLE__
 #endif
 
@@ -334,14 +395,18 @@ void drawScene(void)
 	// cX cY cZ: hướng mắt nhìn thẳng vào tọa độ (0,0,0)
 	// uX uY uZ: vị trí hướng xoay của mắt theo vector up
 	if (changeCamera == 0)
-		gluLookAt(0.0, zoom, 50.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+		gluLookAt(eyeX, zoom, 50.0, eyeX, 0.0, 0.0, 0.0, 1.0, 0.0);
 	if (changeCamera == 1)
-		gluLookAt(0.0, 0.0, zoom, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+		gluLookAt(eyeX, 0.0, zoom, eyeX, 0.0, 0.0, 0.0, 1.0, 0.0);
+	// gluLookAt(mer.distance, 0.0, zoom, mer.distance, 0.0, 0.0, 0.0, 1.0, 0.0);
 	if (changeCamera == 2)
-		gluLookAt(0.0, zoom, 0.00001, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+		gluLookAt(eyeX, zoom, 0.00001, eyeX, 0.0, 0.0, 0.0, 1.0, 0.0);
+	// gluLookAt(mer.distance, zoom, 0.00001, mer.distance, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 	// nếu cờ lệnh vẽ quỹ đạo hành tinh bật thì vẽ
 	if (bigOrbitActive == 1)
+	{
+		drawAxis();
 		orbitalTrails(
 			mer.distance,
 			ven.distance,
@@ -352,9 +417,9 @@ void drawScene(void)
 			ura.distance,
 			nep.distance,
 			plu.distance);
+	}
 
-
-	// tạo một đối tượng quadrics 
+	// tạo một đối tượng quadrics
 	// cần thiết để xây dựng một đối tượng 3D có bọc ảnh
 	GLUquadric *quadric;
 	quadric = gluNewQuadric();
@@ -573,6 +638,7 @@ void keyInput(unsigned char key, int x, int y)
 	case '3':
 		changeCamera = 2;
 		break;
+	// bật tắt hướng dẫn
 	case 'h':
 		if (instructionState)
 			instructionState = 0;
@@ -585,9 +651,11 @@ void keyInput(unsigned char key, int x, int y)
 		else
 			instructionState = 1;
 		break;
+	// giảm tốc độ quay
 	case '-':
 		animationRepeatTime += 5;
 		break;
+	// tăng tốc độ quay
 	case '+':
 		animationRepeatTime -= 5;
 		if (animationRepeatTime <= 0)
@@ -595,18 +663,39 @@ void keyInput(unsigned char key, int x, int y)
 			animationRepeatTime = 5;
 		}
 		break;
+	// quay các hành tinh cực kỳ nhanh
 	case 'z':
 		animationRepeatTime = 0.1;
 		break;
+	// thu nhỏ góc nhìn
 	case '<':
 		if (zoom < 100)
 			zoom++;
 		break;
+	// tăng góc nhìn
 	case '>':
 		if (zoom > -75)
 			zoom--;
 		break;
+	// thiết lập các giá trị về mặc định
 	case 'd':
+		eyeX = sun.distance;
+		currentPlanet = SUN_DISPLAY_NAME;
+		planetModeIndex = DEFAULT_PLANET_MODE;
+		bigOrbitActive = DEFAULT_BIG_ORBIT;
+		smallOrbitActive = DEFAULT_SMALL_ORBIT;
+		moonsActive = DEFAULT_MOON;
+		changeCamera = DEFAULT_CAMERA_VI;
+		labelsActive = DEFAULT_LABEL;
+		zoom = DEFAULT_ZOOM;
+		instructionState = DEFAULT_INSTRUCTION_STATE;
+		animationRepeatTime = DEFAULT_ANIMATION_REPEAT_TIME;
+
+		break;
+	case 'D':
+		eyeX = sun.distance;
+		currentPlanet = SUN_DISPLAY_NAME;
+		planetModeIndex = DEFAULT_PLANET_MODE;
 		bigOrbitActive = DEFAULT_BIG_ORBIT;
 		smallOrbitActive = DEFAULT_SMALL_ORBIT;
 		moonsActive = DEFAULT_MOON;
@@ -616,15 +705,71 @@ void keyInput(unsigned char key, int x, int y)
 		instructionState = DEFAULT_INSTRUCTION_STATE;
 		animationRepeatTime = DEFAULT_ANIMATION_REPEAT_TIME;
 		break;
-	case 'D':
-		bigOrbitActive = DEFAULT_BIG_ORBIT;
-		smallOrbitActive = DEFAULT_SMALL_ORBIT;
-		moonsActive = DEFAULT_MOON;
-		changeCamera = DEFAULT_CAMERA_VI;
-		labelsActive = DEFAULT_LABEL;
-		zoom = DEFAULT_ZOOM;
-		instructionState = DEFAULT_INSTRUCTION_STATE;
-		animationRepeatTime = DEFAULT_ANIMATION_REPEAT_TIME;
+	case 'T':
+		eyeX *= -1.0;
+		break;
+	case 't':
+
+		// tăng biến vị trí chế độ lên 1
+		// nếu biến lớn hơn giá trị của số chế độ đặt ra
+		// chê độ sẽ về 0;
+		planetModeIndex++;
+		if (planetModeIndex >= MAX_OF_PLANET_MODE)
+		{
+			planetModeIndex = DEFAULT_ANIMATE;
+		}
+
+		// tắt âm thanh hiện tại nếu có
+		SoundEngine->stopAllSounds();
+		// phát âm thanh
+		SoundEngine->play2D(planetsSound[planetModeIndex], true);
+
+		// đặt lại hành tinh hiện hành
+		currentPlanet = planetDisplayName[planetModeIndex];
+
+		// đặt góc nhìn lại theo chế độ
+		PLANET_MODE planetMode = planetModes[planetModeIndex];
+		if (planetMode == SUN)
+		{
+			eyeX = sun.distance;
+		}
+		if (planetMode == MER)
+		{
+			eyeX = mer.distance;
+		}
+		if (planetMode == VEN)
+		{
+			eyeX = ven.distance;
+		}
+		if (planetMode == EAR)
+		{
+			eyeX = ear.distance;
+		}
+		if (planetMode == MAR)
+		{
+			eyeX = mar.distance;
+		}
+		if (planetMode == JUP)
+		{
+			eyeX = jup.distance;
+		}
+		if (planetMode == SAT)
+		{
+			eyeX = sat.distance;
+		}
+		if (planetMode == URA)
+		{
+			eyeX = ura.distance;
+		}
+		if (planetMode == NEP)
+		{
+			eyeX = nep.distance;
+		}
+		if (planetMode == PLU)
+		{
+			eyeX = plu.distance;
+		}
+
 		break;
 	}
 	glutPostRedisplay();

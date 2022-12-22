@@ -17,13 +17,55 @@
 #include <GL/freeglut.h>
 #endif
 
+#define MAX_OF_PLANET_MODE 10 // số chế độ tối đa
+// định nghĩa các chế độ góc nhìn hành tinh
+enum PLANET_MODE{
+    SUN,
+    MER,
+    VEN,
+    EAR,
+    MAR,
+    JUP,
+    SAT,
+    URA,
+    NEP,
+    PLU
+};
+
 #define APP_NAME "SOLAR SYSTEM GROUP 4" // tên app
 #define WINDOW_WIDTH 700                // chiều ngang cửa sổ app
 #define WINDOW_HEIGHT 700               // chiều dọc cửa sổ app
 #define WINDOW_POS_X -1                 // vị trí của cửa sổ app theo trục tọa độ x
 #define WINDOW_POS_Y -1                 // vị trí của cửa sổ app theo trục tọa độ y
 
+// đường dẫn tới các file âm thanh
+#define MAIN_SOUND "audio/dochilacaicocuaanh.mp3"
+#define SUN_SOUND  "audio/sun.mp3" 
+#define MER_SOUND  "audio/mercury.mp3" 
+#define VEN_SOUND  "audio/venus.mp3" 
+#define EAR_SOUND  "audio/earth.mp3" 
+#define MAR_SOUND  "audio/mars.mp3" 
+#define JUP_SOUND  "audio/jupiter.mp3" 
+#define SAT_SOUND  "audio/saturn.mp3" 
+#define URA_SOUND  "audio/uranus.mp3" 
+#define NEP_SOUND  "audio/neptune.mp3" 
+#define PLU_SOUND  "audio/pluto.mp3" 
+
+
+#define SUN_DISPLAY_NAME "Sun"
+#define MER_DISPLAY_NAME "Mercury"
+#define VEN_DISPLAY_NAME "Venus"
+#define EAR_DISPLAY_NAME "Earth"
+#define MAR_DISPLAY_NAME "Mars"
+#define JUP_DISPLAY_NAME "Jupiter"
+#define SAT_DISPLAY_NAME "Saturn"
+#define URA_DISPLAY_NAME "Uranus"
+#define NEP_DISPLAY_NAME "Neptune"
+#define PLU_DISPLAY_NAME "Pluto"
+
+
 // định nghĩa các giá trị boolean mặc định của ứng dụng
+#define DEFAULT_PLANET_MODE 0     // chế độ góc nhìn 
 #define DEFAULT_ANIMATE 0           // mô phỏng có đang chạy
 #define DEFAULT_BIG_ORBIT 1         // hiển thị quỹ đạo hành tinh
 #define DEFAULT_SMALL_ORBIT 1       // hiển thị quỹ đạo vệ tinh
