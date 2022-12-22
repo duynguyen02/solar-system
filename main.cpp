@@ -807,5 +807,7 @@ void instruction(void)
 	cout << "Nhan phim H/h de an/hien huong dan" << endl;
 	cout << "Nhan phim +/- de tang/giam toc do quay" << endl;
 	cout << "Nhan phim D/d de thiet lap lai gia tri mac dinh" << endl;
+	cout << "Nhan phim t de thay doi goc nhin quy dao sang hanh tinh khac" << endl;
+	cout << "Nhan phim T de chuyen goc nhin doi cua quy dao hanh tinh hien hanh" << endl;
 	cout << "Nhan phim ESC de ket thuc gia lap" << endl;
 }
