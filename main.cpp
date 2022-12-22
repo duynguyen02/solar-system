@@ -130,8 +130,7 @@ char *planetsSound[MAX_OF_PLANET_MODE] = {
 	SAT_SOUND,
 	URA_SOUND,
 	NEP_SOUND,
-	PLU_SOUND
-};
+	PLU_SOUND};
 
 // khởi tạo đối tượng để phát nhạc
 ISoundEngine *SoundEngine = createIrrKlangDevice();
@@ -509,10 +508,25 @@ void drawScenesInOrder(void)
 
 void resize(int w, int h)
 {
-	glViewport(0, 0, w, h);
+	// để hình ảnh trong mô phỏng không bị biến dạng khi cửa số mô phỏng bị thay đổi kích thướt
+	// ta thiết lập tính toán lại các thông số phối cảnh
+	// tham khảo: http://www.lighthouse3d.com/tutorials/glut-tutorial/preparing-the-window-for-a-reshape/
+
+	// ngăn không cho tỷ lệ (ratio) chia cho 0
+	if (h == 0)
+		h = 1;
+	float ratio = 1.0 * w / h;
+
+	// chỉ định ma trận sử dụng là ma trận chiếu (GL_PROJECTION)
 	glMatrixMode(GL_PROJECTION);
+	// reset lại ma trận
 	glLoadIdentity();
-	glFrustum(-5.0, 5.0, -5.0, 5.0, 5.0, 200.0);
+	// thiết đặt viewport là toàn cửa sổ
+	glViewport(0, 0, w, h);
+	// thiết đặt phối cảnh
+	// góc nhìn theo trục y // tỷ lệ khung hình chính xác giữ x so với y // khoảng cách từ trình xem đến mặt phẳng cắt gần nhất //  khoảng cách từ trình xem đến mặt phẳng cắt ở xa
+	gluPerspective(90, ratio, 1, 1000);
+	// chỉ định lại ma trận modelview
 	glMatrixMode(GL_MODELVIEW);
 }
 
