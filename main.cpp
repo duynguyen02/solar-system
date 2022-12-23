@@ -288,19 +288,24 @@ void setup(void)
 	glEnable(GL_LIGHTING);
 
 	// tham khảo tại: https://phattrienphanmem123az.com/lap-trinh-opengl-cpp/opengl-cpp-bai-5-anh-sang.html
-	// đặt ánh sáng cho toàn khung nền (chiếu sáng toàn phần |GL_LIGHT0: ánh sáng trắng)
 	// giá trị của ánh sáng và cường độ RBGA (nếu thay đổi giá trị màu ánh sáng sẽ bị thay đổi)
+	// lúc này ánh sáng đang chiếu từ ngoài vào trong
+
+	// màu đen
 	float lightAmb[] = {0.0, 0.0, 0.0, 1.0};
-	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmb);
-
+	// màu trắng
 	float lightDifAndSpec[] = {1.0, 1.0, 1.0, 1.0};
-	// đặt ánh sáng khuếch tán
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDifAndSpec);
-	// đặt ánh sáng phản xạ
-	glLightfv(GL_LIGHT0, GL_SPECULAR, lightDifAndSpec);
 
+	// chiếu sáng phần rìa của đối tượng
+	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmb);
+	// đặt ánh sáng khuếch tán (chiếu bề mặt)
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDifAndSpec);
+	// đặt ánh sáng phản xạ (phần ánh sáng có cường độ cao chiếu vào đối tượng)
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightDifAndSpec);
 	glEnable(GL_LIGHT0);
+
 	float globAmb[] = {0.5, 0.5, 0.5, 1.0};
+	// chiếu toàn phần
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globAmb);
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);

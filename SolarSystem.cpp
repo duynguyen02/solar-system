@@ -1,6 +1,7 @@
 #include "include/SolarSystem.h"
 
-void drawAxis(){
+void drawAxis()
+{
     // vẽ trục 3 chiều
     glPushMatrix();
     glColor3f(1.0, 1.0, 1.0);
@@ -54,7 +55,6 @@ void orbitalTrails(float merDis, float venDis, float earDis, float marDis, float
     glPopMatrix();
 }
 
-
 /// các hàm draw...() bên dưới cũng tương tự ///
 void drawSun(Planet sun, GLuint sunTexture, GLUquadric *quadric)
 {
@@ -62,7 +62,7 @@ void drawSun(Planet sun, GLuint sunTexture, GLUquadric *quadric)
     // vị trí góc xoay của sun theo trục y (y = 1.0) (theo mô phỏng thì mọi hành tinh đều ở góc 0)
     glRotatef(sun.orbit, 0.0, 1.0, 0.0);
 
-    // đặt sun vào vị trí của nó trên mặt phẳng tọa độ x 
+    // đặt sun vào vị trí của nó trên mặt phẳng tọa độ x
     // và nó sẽ xoay theo từ khoảng cách này tới tâm (nếu có)
     glTranslatef(sun.distance, 0.0, 0.0);
 
@@ -77,10 +77,10 @@ void drawSun(Planet sun, GLuint sunTexture, GLUquadric *quadric)
     glPushMatrix();
 
     // chỉnh độ nghiên của sun theo mặt phẳng hoàng đạo (trục tọa độ)
-    glRotatef(sun.axisTilt, 1.0, 0.0, 0.0);
+    glRotatef(sun.axisTilt, 0.0, 0.0, 1.0);
     // góc xoay đối với chính nó (trục tọa độ)
     glRotatef(sun.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
 
     // bọc ảnh
     // tương tự trong hàm drawLogoScene
@@ -89,7 +89,7 @@ void drawSun(Planet sun, GLuint sunTexture, GLUquadric *quadric)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     gluQuadricTexture(quadric, 1);
-    // vẽ hình cầu 
+    // vẽ hình cầu
     // quadrid // bán kính // số lượng kinh tuyến // số lượng vĩ tuyến
     gluSphere(quadric, sun.radius, 20.0, 20.0);
     glDisable(GL_TEXTURE_2D);
@@ -110,9 +110,11 @@ void drawMercury(Planet mer, GLuint merTexture, GLUquadric *quadric)
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Sao Thuy");
     }
     glPushMatrix();
-    glRotatef(mer.axisTilt, 1.0, 0.0, 0.0);
+
+    glRotatef(mer.axisTilt, 0.0, 0.0, 1.0);
     glRotatef(mer.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, merTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -136,9 +138,11 @@ void drawVenus(Planet ven, GLuint venTexture, GLUquadric *quadric)
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Sao Kim");
     }
     glPushMatrix();
-    glRotatef(ven.axisTilt, 1.0, 0.0, 0.0);
+
+    glRotatef(ven.axisTilt, 0.0, 0.0, 1.0);
     glRotatef(ven.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, venTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -162,9 +166,14 @@ void drawEarth(Planet ear, Planet lun, GLuint earTexture, GLUquadric *quadric)
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Trai Dat");
     }
     glPushMatrix();
-    glRotatef(ear.axisTilt, 1.0, 0.0, 0.0);
+
+    // góc nghiêng trục (nghiên theo z)
+    glRotatef(ear.axisTilt, 0.0, 0.0, 1.0);
+    // xoay quay chính nó (xoay trục y)
     glRotatef(ear.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    // xoay để đúng chiều texture
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, earTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -196,9 +205,11 @@ void drawMars(Planet mar, Planet pho, Planet dei, GLuint marTexture, GLUquadric 
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Sao Hoa");
     }
     glPushMatrix();
-    glRotatef(mar.axisTilt, 1.0, 0.0, 0.0);
+
+    glRotatef(mar.axisTilt, 0.0, 0.0, 1.0);
     glRotatef(mar.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, marTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -232,9 +243,11 @@ void drawJupiter(Planet jup, Planet eur, Planet gan, Planet cal, GLuint jupTextu
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Sao Moc");
     }
     glPushMatrix();
-    glRotatef(jup.axisTilt, 1.0, 0.0, 0.0);
+
+    glRotatef(jup.axisTilt, 0.0, 0.0, 1.0);
     glRotatef(jup.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, jupTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -270,9 +283,11 @@ void drawSaturn(Planet sat, Planet tit, GLuint satTexture, GLUquadric *quadric)
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Sao Tho");
     }
     glPushMatrix();
-    glRotatef(sat.axisTilt, 1.0, 0.0, 0.0);
+
+    glRotatef(sat.axisTilt, 0.0, 0.0, 1.0);
     glRotatef(sat.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, satTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -310,9 +325,11 @@ void drawUranus(Planet ura, Planet puc, GLuint uraTexture, GLUquadric *quadric)
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Sao Thien Vuong");
     }
     glPushMatrix();
-    glRotatef(ura.axisTilt, 1.0, 0.0, 0.0);
+
+    glRotatef(ura.axisTilt, 0.0, 0.0, 1.0);
     glRotatef(ura.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, uraTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -344,9 +361,11 @@ void drawNeptune(Planet nep, Planet tri, GLuint nepTexture, GLUquadric *quadric)
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Sao Hai Vuong");
     }
     glPushMatrix();
-    glRotatef(nep.axisTilt, 1.0, 0.0, 0.0);
+
+    glRotatef(nep.axisTilt, 0.0, 0.0, 1.0);
     glRotatef(nep.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, nepTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -378,9 +397,11 @@ void drawPluto(Planet plu, Planet nix, GLuint pluTexture, GLUquadric *quadric)
         writeBitmapString(GLUT_BITMAP_HELVETICA_12, "Sao Diem Vuong");
     }
     glPushMatrix();
-    glRotatef(plu.axisTilt, 1.0, 0.0, 0.0);
+
+    glRotatef(plu.axisTilt, 0.0, 0.0, 1.0);
     glRotatef(plu.axisAni, 0.0, 1.0, 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glRotatef(-90.0, 1.0, 0.0, 0.0);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, pluTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -407,6 +428,7 @@ void drawBackground(GLuint staTexture)
     glBindTexture(GL_TEXTURE_2D, staTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
     glBegin(GL_POLYGON);
     glTexCoord2f(-1.0, 0.0);
     glVertex3f(-200, -200, -100);
@@ -421,6 +443,30 @@ void drawBackground(GLuint staTexture)
     glBindTexture(GL_TEXTURE_2D, staTexture);
     glBegin(GL_POLYGON);
     glTexCoord2f(0.0, 0.0);
+    glVertex3f(-300, -83, -200);
+    glTexCoord2f(8.0, 0.0);
+    glVertex3f(300, -83, 200);
+    glTexCoord2f(8.0, 8.0);
+    glVertex3f(300, 200, -83);
+    glTexCoord2f(0.0, 8.0);
+    glVertex3f(-300, 83, -200);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, staTexture);
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3f(300, -83, -200);
+    glTexCoord2f(8.0, 0.0);
+    glVertex3f(-300, -83, 200);
+    glTexCoord2f(8.0, 8.0);
+    glVertex3f(-300, 200, -83);
+    glTexCoord2f(0.0, 8.0);
+    glVertex3f(300, 83, -200);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, staTexture);
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0.0, 0.0);
     glVertex3f(-200, -83, 200);
     glTexCoord2f(8.0, 0.0);
     glVertex3f(200, -83, 200);
@@ -429,6 +475,7 @@ void drawBackground(GLuint staTexture)
     glTexCoord2f(0.0, 8.0);
     glVertex3f(-200, -83, -200);
     glEnd();
+
     glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 }
