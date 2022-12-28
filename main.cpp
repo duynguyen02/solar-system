@@ -90,6 +90,8 @@ int mouseX;
 int mouseY;
 float axisLength;
 
+float height;
+
 PLANET_MODE planetModes[MAX_OF_PLANET_MODE] = {
 	SUN,
 	MER,
@@ -169,6 +171,8 @@ Planet nix(.10, 1.5, 0, 5.00, 0, 0);	 // Nix	   (Pluto)
 int main(int argc, char **argv)
 {
 	SoundEngine->play2D(MAIN_SOUND, true);
+
+	height = WINDOW_HEIGHT;
 
 	eyeX = sun.distance;
 
@@ -359,20 +363,21 @@ void drawScene(void)
 	// nên chỉ có các HĐH thuộc unix mới có thể gọi hàm này
 	if (instructionState)
 	{
-		printAt(5, 680, "Nhan phim SPACE/LEFT_MOUSE de chay/dung mo phong");
-		printAt(5, 655, "Nhan phim O de an/hien quy dao hanh tinh");
-		printAt(5, 630, "Nhan phim o de an/hien quy dao ve tinh");
-		printAt(5, 605, "Nhan phim M/m de an/hien cac ve tinh");
-		printAt(5, 580, "Nhan phim L/l de an/hien cac nhan");
-		printAt(5, 555, "Nhan phim 1/2/3 de thay doi goc nhin");
-		printAt(5, 530, "Cuon chuot de phong to/thu nho (voi HDH Windows)");
-		printAt(5, 505, "Nhan phim >/< de phong to/thu nho (voi HDH Linux)");
-		printAt(5, 480, "Nhan phim H/h de an/hien huong dan");
-		printAt(5, 455, "Nhan phim +/- de tang/giam toc do quay");
-		printAt(5, 430, "Nhan phim D/d de thiet lap lai gia tri mac dinh");
-		printAt(5, 405, "Nhan phim t de thay doi goc nhin quy dao sang hanh tinh khac");
-		printAt(5, 380, "Nhan phim T de chuyen goc nhin doi cua quy dao hanh tinh hien hanh");
-		printAt(5, 355, "Nhan phim ESC de ket thuc gia lap");
+		printAt(5, height - (20 * 1) - (5 * 0), "3D SOLAR SYSTEM SIMULATOR - VERSION 1.0.2 - GROUP 6 - S23-62TH");
+		printAt(5, height - (20 * 2) - (5 * 1), "Nhan phim SPACE/LEFT_MOUSE de chay/dung mo phong");
+		printAt(5, height - (20 * 3) - (5 * 2), "Nhan phim O de an/hien quy dao hanh tinh");
+		printAt(5, height - (20 * 4) - (5 * 3), "Nhan phim o de an/hien quy dao ve tinh");
+		printAt(5, height - (20 * 5) - (5 * 4), "Nhan phim M/m de an/hien cac ve tinh");
+		printAt(5, height - (20 * 6) - (5 * 5), "Nhan phim L/l de an/hien cac nhan");
+		printAt(5, height - (20 * 7) - (5 * 6), "Nhan phim 1/2/3 de thay doi goc nhin");
+		printAt(5, height - (20 * 8) - (5 * 7), "Cuon chuot de phong to/thu nho (voi HDH Windows)");
+		printAt(5, height - (20 * 9) - (5 * 8), "Nhan phim >/< de phong to/thu nho (voi HDH Linux)");
+		printAt(5, height - (20 * 10) - (5 * 9), "Nhan phim H/h de an/hien huong dan");
+		printAt(5, height - (20 * 11) - (5 * 10), "Nhan phim +/- de tang/giam toc do quay");
+		printAt(5, height - (20 * 12) - (5 * 11), "Nhan phim D/d de thiet lap lai gia tri mac dinh");
+		printAt(5, height - (20 * 13) - (5 * 12), "Nhan phim t de thay doi goc nhin quy dao sang hanh tinh khac");
+		printAt(5, height - (20 * 14) - (5 * 13), "Nhan phim T de chuyen goc nhin doi cua quy dao hanh tinh hien hanh");
+		printAt(5, height - (20 * 15) - (5 * 14), "Nhan phim ESC de ket thuc gia lap");
 	}
 	// Hành tinh hiện hành
 	printAt(5, 125, "Current Planet = %s", currentPlanet);
@@ -521,6 +526,8 @@ void resize(int w, int h)
 	if (h == 0)
 		h = 1;
 	float ratio = 1.0 * w / h;
+
+	height = h;
 
 	// chỉ định ma trận sử dụng là ma trận chiếu (GL_PROJECTION)
 	glMatrixMode(GL_PROJECTION);
@@ -723,6 +730,9 @@ void keyInput(unsigned char key, int x, int y)
 		zoom = DEFAULT_ZOOM;
 		instructionState = DEFAULT_INSTRUCTION_STATE;
 		animationRepeatTime = DEFAULT_ANIMATION_REPEAT_TIME;
+		break;
+	case 'p':
+		SoundEngine->stopAllSounds();
 		break;
 	case 'T':
 		eyeX *= -1.0;
