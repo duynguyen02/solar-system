@@ -32,7 +32,7 @@ enum PLANET_MODE{
     PLU
 };
 
-#define APP_NAME "SOLAR SYSTEM GROUP 4" // tên app
+#define APP_NAME "SOLAR SYSTEM GROUP 6" // tên app
 #define WINDOW_WIDTH 700                // chiều ngang cửa sổ app
 #define WINDOW_HEIGHT 700               // chiều dọc cửa sổ app
 #define WINDOW_POS_X -1                 // vị trí của cửa sổ app theo trục tọa độ x
