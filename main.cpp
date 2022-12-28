@@ -137,7 +137,7 @@ ISoundEngine *SoundEngine = createIrrKlangDevice();
 
 GLuint sunTexture, merTexture, venTexture, earTexture, marTexture, jupTexture, satTexture, uraTexture, nepTexture, pluTexture, staTexture, logTexture;
 
-// bán kính // khoảng cách // quỹ đạo // tốc độ quỹ đạo // độ nghiên // trục xoay
+// bán kính // khoảng cách // quỹ đạo // tốc độ quỹ đạo // độ nghiêng // trục xoay
 Planet sun(5.0, 0, 0, 0, 0, 0);			 // Sun
 Planet mer(1.0, 7, 0, 4.74, 0.027, 0);	 // Mercury
 Planet ven(1.5, 11, 0, 3.50, 177.36, 0); // Venus

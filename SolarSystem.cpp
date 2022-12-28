@@ -76,7 +76,7 @@ void drawSun(Planet sun, GLuint sunTexture, GLUquadric *quadric)
 
     glPushMatrix();
 
-    // chỉnh độ nghiên của sun theo mặt phẳng hoàng đạo (trục tọa độ)
+    // chỉnh độ nghiêng của sun theo mặt phẳng hoàng đạo (trục tọa độ)
     glRotatef(sun.axisTilt, 0.0, 0.0, 1.0);
     // góc xoay đối với chính nó (trục tọa độ)
     glRotatef(sun.axisAni, 0.0, 1.0, 0.0);
