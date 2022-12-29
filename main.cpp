@@ -198,8 +198,7 @@ int main(int argc, char **argv)
 	instruction();
 	// khởi tạo glut
 	glutInit(&argc, argv);
-	// khởi tạo các thông số cơ bản
-	glutInitContextVersion(4, 2);
+
 	glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
